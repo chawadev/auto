@@ -1,0 +1,24 @@
+name: Auto Commit
+on:
+  schedule:
+    - cron: "*/30 * * * *"  # Runs every 30 minutes
+  workflow_dispatch:  # Allows manual execution
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Make a change
+        run: |
+          echo "$(date)" >> commit_log.txt
+
+      - name: Commit and push
+        run: |
+          git config --global user.name "YourGitHubUsername"
+          git config --global user.email "YourGitHubEmail@example.com"
+          git add .
+          git commit -m "Automated commit: $(date)"
+          git push
